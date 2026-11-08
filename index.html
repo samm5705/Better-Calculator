@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Better Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!--AUTH--><div id="auth"><div class="box">
+ <h1>🧮 Better Calculator</h1>
+ <p>Student sign in. Your work is saved privately to your account.</p>
+ <div class="warn" id="cfgwarn" style="display:none">Sign-in is not configured yet, so nothing can be saved. Add your Supabase keys (see SETUP.md).</div>
+ <div class="seg" id="aseg"><button class="on" data-m="login">Log in</button><button data-m="reg">Register</button></div>
+ <button class="gbtn" id="gg"><b style="color:#4285f4;font-size:18px">G</b> Continue with Google</button>
+ <div class="or" id="aor">or use your email</div>
+ <input class="f" id="ae" type="email" placeholder="Email" autocomplete="email">
+ <input class="f" id="ap" type="password" placeholder="Password" autocomplete="current-password" style="margin-top:8px">
+ <input class="f" id="ap2" type="password" placeholder="Confirm password" autocomplete="new-password" style="margin-top:8px;display:none">
+ <button class="pb" id="ago">Log in</button>
+ <div class="msg" id="amsg"></div>
+ <button class="lnk" id="aforgot">Forgot password?</button>
+ <button class="lnk" id="aguest" style="display:none">Try the calculator without saving</button>
+</div></div>
+<div class="app" id="app" style="display:none">
+ <div id="bar2"><span id="who"></span><span><button id="dbtn">Home</button> <button class="lo">Log out</button></span></div>
+ <div class="tabs" id="tabs">
+  <button data-p="calc" class="on">Calc</button><button data-p="conv">Units</button><button data-p="cur">Money</button><button data-p="gr">Graph</button><button data-p="mth">Math</button><button data-p="sol">Solve</button><button data-p="dash">Home</button>
+ </div>
+
+ <div class="pane on casio" id="calc">
+  <div class="lcd" id="lcd"><div class="ind"><span id="iS">S</span><span id="iA">A</span><span id="iH">hyp</span><span id="iM">M</span><span id="iD">R</span><span id="iP"></span></div><div id="hist"></div>
+  <input id="expr" autofocus autocomplete="off" inputmode="none" placeholder="0" aria-label="Expression">
+  <div id="res"></div></div>
+  <div class="bar"><button id="deg">RAD</button><button id="clearH">Clear history</button></div>
+  <div class="grid" id="keys" style="display:none"></div><div class="grid" id="k1"></div><div class="grid" id="fk"></div><div class="grid" id="k5"></div>
+ </div>
+
+ <div class="pane" id="conv">
+  <label>Type</label><select id="cat"></select>
+  <label>Value</label><input class="f" id="cv" type="number" value="1" inputmode="decimal">
+  <div class="two"><div><label>From</label><select id="cf"></select></div><div><label>To</label><select id="ct"></select></div></div>
+  <button class="btn" id="swap">⇄ Swap</button>
+  <div class="out" id="cout"></div>
+ </div>
+
+ <div class="pane" id="cur">
+  <label>Amount</label><input class="f" id="ma" type="number" value="100" inputmode="decimal">
+  <div class="two"><div><label>From</label><select id="mf"></select></div><div><label>To</label><select id="mt"></select></div></div>
+  <button class="btn" id="mswap">⇄ Swap</button>
+  <div class="out" id="mout"></div>
+  <div class="sm">Rates are approximate and work offline. Edit them below to match today’s rate (1 USD =).</div>
+  <div class="rates" id="rates"></div>
+ </div>
+
+ <div class="pane" id="gr">
+  <label>Graph y =</label><input class="f" id="gf" value="sin(x)" autocomplete="off">
+  <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="gd"> Also show the derivative f′(x)</label>
+  <canvas id="cv2" width="720" height="520"></canvas>
+  <div class="two"><button class="btn" id="zin">＋ Zoom in</button><button class="btn" id="zout">－ Zoom out</button></div>
+  <div class="sm">Use x, + − × ÷ ^ and sin, cos, tan, √, ln, log. Drag the graph to move it.</div>
+ </div>
+ <div class="pane" id="mth">
+  <label>Type any math. Try 12!, gcd(12,18), combinations(10,3), det([[1,2],[3,4]]), mean(2,4,9)</label>
+  <input class="f" id="mx" autocomplete="off" placeholder="e.g. 5! + sqrt(16)">
+  <div class="rs" id="mxo"></div>
+  <label>Calculus: f(x) =</label>
+  <input class="f" id="kf" value="x^3 + 2*x" autocomplete="off">
+  <div class="two">
+   <div><label>Point x</label><input class="f" id="kx" type="number" value="1"></div>
+   <div><label>Integral from → to</label><div class="two"><input class="f" id="k1" type="number" value="0"><input class="f" id="k2" type="number" value="1"></div></div>
+  </div>
+  <div class="two"><button class="btn" id="bd">d/dx Derivative</button><button class="btn" id="bi">∫ Integral</button><button class="btn" id="bs">Solve f(x)=0</button><button class="btn" id="bl">Limit at x</button></div>
+  <div class="rs" id="ko"></div>
+  <label>More tools: algebra, geometry, statistics, matrices, finance and more</label>
+  <select id="tl"></select>
+  <input class="f" id="ti" autocomplete="off" style="margin-top:8px">
+  <button class="btn" id="tg">Calculate</button>
+  <div class="rs" id="to"></div>
+  <div class="sm">Use x as the variable, * to multiply, ^ for powers, pi, e. Trig uses radians here, or write 30 deg.</div>
+ </div>
+ <div class="pane" id="sol">
+  <label>Type or paste your question (any length)</label>
+  <textarea id="sq" rows="6" class="f" placeholder="Example: A train leaves at 9:00 going 60 km/h. Another leaves at 10:00 going 80 km/h on the same track. When does the second one catch up?"></textarea>
+  <div class="two"><button class="btn" id="sg">Write solution</button><button class="btn" id="sc">Copy</button></div>
+  <div class="rs" id="so" style="font-weight:400;color:var(--text);line-height:1.55"></div>
+  <div class="sm">Powered by Claude. It shows every step, but check important answers.</div>
+ </div>
+ <div class="pane" id="dash">
+  <div class="stat" id="dstat"></div>
+  <label>Recent activity</label><div id="dact"></div>
+  <label>Favourite formulas (tap ☆ next to an input to save one)</label><div id="dfav"></div>
+  <label>Saved long-question procedures</label><div id="dsol"></div>
+  <div class="two"><button class="btn lo">Log out</button><div class="sm" id="sst" style="align-self:center"></div></div>
+ </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.2/math.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
